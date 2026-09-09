@@ -159,6 +159,10 @@ subprojects {
     if (!project.hasProperty("maxParallelForks")) {
       maxParallelForks = Runtime.runtime.availableProcessors()
     }
+    // Recycle the JVM periodically with sufficient heap. Running all embedded Kafka/KDC tests
+    // in a single JVM accumulates resources, causing OOMs and GC timeouts.
+    forkEvery = 25
+    maxHeapSize = '2g'
     finalizedBy jacocoTestReport
   }
 
